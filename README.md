@@ -1,3 +1,3 @@
-a simple web UI to learn Material UI in React
-
-![Screenshot of the site](./screenshots/Agensy-website-800.png)
+a simple note taking app to learn Material UI in React
+. fetch data with JSON server
+![Screenshot of the site](./screenshots/42.learn-MUI-1200.png)

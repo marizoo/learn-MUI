@@ -5,23 +5,31 @@ import Container from '@mui/material/Container';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { makeStyles } from '@mui/styles';
 import TextField from '@mui/material/TextField';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import { useNavigate } from 'react-router-dom'
 
 
 const useStyles = makeStyles({
-   field: {
+   field:{
        marginTop: 20,
        marginBottom: 20,
        display: 'block',
    }
-})
+});
 
 const Create = () => {
 
     const classes = useStyles();
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
     const [titleError, setTitleError] = useState(false);
     const [detailsError, setDetailsError] = useState(false);
+    const [category, setCategory] = useState('todos');
     
     const handleSubmit = (ev) => {
         ev.preventDefault();
@@ -33,11 +41,18 @@ const Create = () => {
         if(details === '') setDetailsError(true);
 
         if(title && details) {
-            console.log(title, details)
+            // console.log(title, details, category)
+            fetch('http://localhost:8000/notes', {
+                method: 'POST',
+                headers: {'content-type' : 'application/json'},
+                body: JSON.stringify({title, details, category}),
+            }).then(() => navigate('/'))
         }
 
 
     }
+
+    
 
     return (
         <Container>
@@ -76,6 +91,17 @@ const Create = () => {
                     rows={4}
                     error={detailsError}
                 />
+
+                <FormControl margin='normal' className={classes.field}>
+                    <FormLabel>Note Category</FormLabel>
+                    <RadioGroup value={category} onChange={(ev) => setCategory(ev.target.value)}>
+                        <FormControlLabel control={<Radio />} label='Money' value='money'/>
+                        <FormControlLabel control={<Radio />} label='Todos' value='todos'/>
+                        <FormControlLabel control={<Radio />} label='Reminders' value='reminders'/>
+                        <FormControlLabel control={<Radio />} label='Work' value='work'/>
+                    </RadioGroup>
+                </FormControl>
+                
             
 
                 <Button 
